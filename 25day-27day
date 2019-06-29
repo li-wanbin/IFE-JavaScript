@@ -5,56 +5,245 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>时间计算</title>
 </head>
 
 <body>
+    <h4>选择你的生日可以算出你来到这个世界多长时间</h4>
+    <p id="result"></p>
+    <p id="result1"></p>
+    <select id="year-select">
+        </select>
+
+    <select id="month-select">
+        </select>
+
+    <select id="day-select">
+        </select>
+
+    <select id="hour-select">
+        </select>
+
+    <select id="minite-select">
+        </select>
+
+    <select id="second-select">
+        </select>
+
+    <p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>
     <script>
-        function go() {
-            console.log("Go");
-        }
-
-        function turnLeft() {
-            console.log("turnLeft")
-        }
-
-        function turnright() {
-            turnLeft();
-            turnLeft();
-            turnLeft();
-        }
-
-        function GoSteps(n) {
-            if (n) {
-                if (n > 0) {
-                    n = parseInt(n);
-                    while (n > 0) {
-                        go();
-                        n--;
-                    }
-                } else if (n <= 0 || isNaN(n)) {
-                    console.log("0");
-                } else {
-                    go();
-                }
+        var result = document.getElementById("result");
+        var result1 = document.getElementById("result1");
+        /* 不足两位时补齐位数 */
+        function cover(num) {
+            num = num.toString();
+            if (num.length < 2) {
+                num = "0" + num;
+                return num;
             } else {
-                console.log("0");
+                return num;
             }
         }
+        /* 获取星期并输出 */
+        function week() {
+            var day;
+            switch (new Date().getDay()) {
+                case 0:
+                    day = "星期天";
+                    break;
+                case 1:
+                    day = "星期一";
+                    break;
+                case 2:
+                    day = "星期二";
+                    break;
+                case 3:
+                    day = "星期三";
+                    break;
+                case 4:
+                    day = "星期四";
+                    break;
+                case 5:
+                    day = "星期五";
+                    break;
+                case 6:
+                    day = "星期六";
+            }
+            return day;
+        }
+        /* 获取时间 */
+        function output() {
+            var time = new Date();
+            var year = time.getFullYear();
+            var month = time.getMonth() + 1;
+            var day = time.getDate();
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            var seconds = time.getSeconds();
+            result.innerHTML = "现在是北京时间：" + year + "年" + cover(month) +
+                "月" + cover(day) + "日" + "&nbsp;&nbsp;" + week() + "&nbsp;&nbsp;" +
+                cover(hours) + ":" + cover(minutes) + ":" + cover(seconds);
+        }
+        /* 添加定时事件 */
+        window.setInterval(output, 500);
+        /* 英文星期输出 */
+        function weekEnglish() {
+            var day;
+            switch (new Date().getDay()) {
+                case 0:
+                    day = "Sunday";
+                    break;
+                case 1:
+                    day = "Monday";
+                    break;
+                case 2:
+                    day = "Tuesday";
+                    break;
+                case 3:
+                    day = "Wednesday";
+                    break;
+                case 4:
+                    day = "Thursday";
+                    break;
+                case 5:
+                    day = "Friday";
+                    break;
+                case 6:
+                    day = "Saturday";
+            }
+            return day;
+        }
+        /* 判断上下午 */
+        function aPm() {
+            let time = new Date();
+            let hours = time.getDate();
+            var m;
+            if (hours < 12) {
+                m = "AM";
+            } else {
+                m = "PM";
+            }
+            return m;
+        }
+        /* 另一种格式输出 */
+        function outputEnglish() {
+            var time = new Date();
+            var year = time.getFullYear();
+            var month = time.getMonth() + 1;
+            var day = time.getDate();
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            var seconds = time.getSeconds();
+            result1.innerHTML = +year + "-" + cover(month) + "-" + cover(day) +
+                "&nbsp;&nbsp;" + weekEnglish() + "&nbsp;&nbsp;" + cover(hours) +
+                ":" + cover(minutes) + ":" + cover(seconds) + "&nbsp;&nbsp;" + aPm();
+        }
+        /* 添加定时事件 */
+        window.setInterval(outputEnglish, 500);
+    </script>
+    <script>
+        //使用上方的HTML结构（可以根据需要自行微调）为基础编写JavaScript代码
+        //当变更任何一个select选择时，更新 result-wrapper 的内容
+        //当所选时间早于现在时间时，文案为 现在距离 "所选时间" 已经过去 xxxx
+        //当所选时间晚于现在时间时，文案为 现在距离 "所选时间" 还有 xxxx
 
-        GoSteps(10); // Go 10次
-        GoSteps(1); // Go 1次
-        GoSteps(); // Go 1次，认为缺少参数时，默认参数为1
-        GoSteps(0); // 0次
-        GoSteps(-1); // 0次
-        GoSteps(1.4); // Go 1次
-        GoSteps(1.6); // Go 1次
-        GoSteps(-1); // 0次
-        GoSteps(true); // Go 1次
-        GoSteps(false); // 0次
-        GoSteps("Test"); // 0次
-        GoSteps(NaN); // 0次
-        GoSteps(null); // 0次
+        var yearSelect = document.getElementById("year-select");
+        var monthSelect = document.getElementById("month-select");
+        var daySelect = document.getElementById("day-select");
+        var hoursSelect = document.getElementById("hour-select");
+        var miniteSelect = document.getElementById("minite-select");
+        var secondSelect = document.getElementById("second-select");
+        var resultWrapper = document.getElementById("result-wrapper");
+        /* 输出月天数 */
+        function loapDay() {
+            var year = yearSelect.value;
+            var month = monthSelect.value;
+            var num;
+            switch (Number(month)) {
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    num = 31;
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    num = 30;
+                    break;
+                default:
+                    if (year % 4 == 0) {
+                        num = 29;
+                    } else {
+                        num = 28;
+                    }
+            }
+            return num;
+        }
+        /* 添加下拉项目 */
+        function addOption(i, num, itemParent) {
+            while (i <= num) {
+                var item = document.createElement("option");
+                item.innerHTML = i;
+                item.value = i;
+                itemParent.appendChild(item);
+                i++;
+            }
+        }
+        /* 添加年选项 */
+        addOption(1990, 2032, yearSelect);
+        /* 添加月选项 */
+        addOption(1, 12, monthSelect);
+        /* 添加日选项 */
+        addOption(1, loapDay(), daySelect);
+        /* 添加小时选项 */
+        addOption(0, 23, hoursSelect);
+        /*添加分钟子项 */
+        addOption(0, 59, miniteSelect);
+        /*添加秒子项 */
+        addOption(0, 59, secondSelect);
+
+        //判断当前时间和选项时间是将来还是过去并输出差值
+        function contrastTime() {
+            let time = new Date();
+            let someTime = new Date();
+            someTime.setFullYear(yearSelect.value);
+            someTime.setMonth(Number(monthSelect.value) - 1);
+            someTime.setDate(daySelect.value);
+            someTime.setHours(hoursSelect.value);
+            someTime.setMinutes(miniteSelect.value);
+            someTime.setSeconds(secondSelect.value);
+            /* 计算时间差值 */
+            var gap = time.getTime() - someTime.getTime();
+            /* 计算相差的天数 */
+            var gapDay = Math.floor(Math.abs(gap) / 86400000);
+            /* 计算相差的小时 */
+            var gapHours = Math.floor((Math.abs(gap) % 86400000) / 3600000);
+            /* 计算相差分钟 */
+            var gapMinites = Math.floor(((Math.abs(gap) % 86400000) % 3600000) / 60000);
+            /* 计算相差秒数 */
+            var gapScends = Math.floor((((Math.abs(gap) % 86400000) % 3600000) % 60000) / 1000);
+            /* 判断是在今天前还是在今天后 */
+            if (gap < 0) {
+                resultWrapper.innerHTML = "现在距离\"所选时间\"还有" + gapDay + "天" +
+                    gapHours + "小时" + gapMinites + "分钟" + gapScends + "秒";
+            } else {
+                resultWrapper.innerHTML = "现在距离\"所选时间\"已经过去" + gapDay + "天" +
+                    gapHours + "小时" + gapMinites + "分钟" + gapScends + "秒";
+            }
+        }
+        /* 根据年和月的变化改变天数 */
+        document.body.addEventListener("change", function(e) {
+            // 如果当前事件主体id是"year-select"和"month-select"，重新设置天数。
+            if (e.target == yearSelect || e.target == monthSelect) {
+                addOption(1, loapDay(), daySelect);
+            }
+            contrastTime();
+        });
     </script>
 </body>
 
