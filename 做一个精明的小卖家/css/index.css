@@ -1,0 +1,14 @@
+* {
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+}
+
+.region-select {
+    width: 60px;
+    text-align: center;
+}
+
+th,
+td {
+    padding: 0 10px;
+}
