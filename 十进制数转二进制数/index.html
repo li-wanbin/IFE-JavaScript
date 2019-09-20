@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>十进制数转二进制数</title>
+</head>
+
+<body>
+    <input id="dec-number" type="text" placeholder="输入一个非负整数">
+    <button id="trans-btn">转化为二进制</button>
+    <p id="result">运算结果是：</p>
+    <script>
+        //获取元素
+        let input = document.getElementById("dec-number");
+        let btn = document.getElementById("trans-btn");
+        let res = document.getElementById("result");
+        input.focus();//页面加载完毕后输入框获得焦点
+        //给按钮绑定事件
+        btn.onclick = function () {
+            res.innerText = dec2bin(input.value);
+        }
+        //封装一个转换函数
+        function dec2bin(tempNumber) {
+            //创建一个数组用于存放结果
+            let arr = [];
+            //将传入的值转为Number对象；
+            tempNumber = Number(tempNumber);
+            //判断tempNumber是否是一个非负整数
+            if (tempNumber % 1 !== 0 || tempNumber <= 0) {
+                input.focus();
+                return "请输入一个正整数！";
+            }
+            //验证结果是否正确
+            console.log(tempNumber.toString(2));
+            //转换为二进制数，除二取余法；
+            //先获得余数，然后再除二向下取整重新赋值给tempNumber
+            while (tempNumber !== 0) {
+                let x = tempNumber % 2;
+                arr.push(x);
+                tempNumber = Math.floor(tempNumber / 2);
+            }
+            //将数组反转然后转为字符串输出
+            let result = arr.reverse().join('');
+            return result;
+        }
+    </script>
+</body>
+
+</html>
