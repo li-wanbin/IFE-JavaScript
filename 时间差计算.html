@@ -13,22 +13,22 @@
     <p id="result"></p>
     <p id="result1"></p>
     <select id="year-select">
-        </select>
+    </select>
 
     <select id="month-select">
-        </select>
+    </select>
 
     <select id="day-select">
-        </select>
+    </select>
 
     <select id="hour-select">
-        </select>
+    </select>
 
     <select id="minite-select">
-        </select>
+    </select>
 
     <select id="second-select">
-        </select>
+    </select>
 
     <p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>
     <script>
@@ -230,15 +230,13 @@
             var gapScends = Math.floor((((Math.abs(gap) % 86400000) % 3600000) % 60000) / 1000);
             /* 判断是在今天前还是在今天后 */
             if (gap < 0) {
-                resultWrapper.innerHTML = "现在距离\"所选时间\"还有" + gapDay + "天" +
-                    gapHours + "小时" + gapMinites + "分钟" + gapScends + "秒";
+                resultWrapper.innerHTML = `现在距离“所选时间”还有${gapDay}天${gapHours}小时${gapMinites}分钟${gapScends}秒`;
             } else {
-                resultWrapper.innerHTML = "现在距离\"所选时间\"已经过去" + gapDay + "天" +
-                    gapHours + "小时" + gapMinites + "分钟" + gapScends + "秒";
+                resultWrapper.innerHTML = `现在距离“所选时间”已经过去${gapDay}天${gapHours}小时${gapMinites}分钟${gapScends}秒`;
             }
         }
         /* 根据年和月的变化改变天数 */
-        document.body.addEventListener("change", function(e) {
+        document.body.addEventListener("change", function (e) {
             // 如果当前事件主体id是"year-select"和"month-select"，重新设置天数。
             if (e.target == yearSelect || e.target == monthSelect) {
                 addOption(1, loapDay(), daySelect);
