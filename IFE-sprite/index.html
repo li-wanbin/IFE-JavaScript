@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+ <style>
+        body {
+            margin: 0 auto;
+            background-color: beige;
+        }
+
+        .main {
+            width: 100%;
+            height: 500px;
+            background-color: #ffffff;
+        }
+
+        .left {
+            float: left;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-top: 100px;
+            font-size: 42px;
+            font-weight: 400;
+        }
+
+        p {
+            color: #999;
+            font-size: 20px;
+        }
+
+        .right {
+            float: right;
+            margin-top: 20px;
+            width: 480px;
+            height: 480px;
+            background-image: url(./images/erik_ce204002.jpg);
+            background-position-y: 8160px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="left">
+            <h1>纸上得来终觉浅<br>绝知此事要躬行</h1>
+            <P>我们精心设计了许多编码任务<br>让你可以循序渐进、由浅入深<br>地在实践中掌握技术</P>
+        </div>
+        <div class="right"></div>
+
+
+    </div>
+<div style="margin: 0 auto; width:200px;">
+    <button id="fade-btn" style="margin: 10px auto; width: 70px; height: 30px;display: block;">淡出</button>
+    <div id="fade-obj" style="width:200px;height:200px;background:#000; opacity: 1;"></div>
+</div>
+
+    <script>
+
+        //笑脸动画开始
+        var img = document.getElementsByClassName("right")[0];
+        var pos = 480;
+        function frame() {
+            var id = setInterval(function () {
+                if (pos == 8160) {
+                    clearInterval(id);
+                    var cc = setInterval(function () {
+                        pos -= 480;
+                        img.style.backgroundPositionY = pos + "px";
+                        if (pos == 480) {
+                            clearInterval(cc);
+                            frame()
+                        }
+                    }, 80)
+                } else {
+                    pos += 480;
+                    img.style.backgroundPositionY = pos + "px";
+                }
+            }, 80)
+        }
+        frame();
+        //笑脸动画结束
+
+        //淡出，淡入开始
+        var obj = document.getElementById("fade-obj");
+        var btn = document.getElementById("fade-btn");
+        btn.onclick = function () {
+            var text = btn.innerHTML;
+            if (text == "淡出") {
+                var stop = setInterval(fadeOut, 5);
+                function fadeOut() {
+                    var c = obj.style.opacity;
+                    var x = (c * 100 - 1) / 100;
+                    if (c < 0) {
+                        clearInterval(stop);
+                        btn.innerHTML = "淡入";
+                        btn.disabled = "";
+                    } else {
+                        obj.style.opacity = x;
+                        btn.disabled = 'disabled';
+                    }
+                }
+                return;
+            } else if (text == "淡入") {
+                var stop = setInterval(fadeOut, 5);
+                function fadeOut() {
+                    var c = obj.style.opacity;
+                    var x = (c * 100 + 1) / 100;
+                    if (c > 1) {
+                        clearInterval(stop);
+                        btn.innerHTML = "淡出";
+                        btn.disabled = "";
+                    } else {
+                        obj.style.opacity = x;
+                        btn.disabled = 'disabled';
+                    }
+                }
+                return;
+            }
+        };
+        //结束
+    </script>
+</body>
+
+</html>

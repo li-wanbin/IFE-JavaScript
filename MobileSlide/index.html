@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="slide" id="slide">
+        <div class="slide-item-container">
+            <div class="slide-item">
+                <a href="JavaScript:;" class="slide-link">
+                    <img src="img/1.jpg" alt="slide" class="slide-img">
+                </a>
+            </div>
+            <div class="slide-item">
+                <a href="JavaScript:;" class="slide-link">
+                    <img src="img/2.jpg" alt="slide" class="slide-img">
+                </a>
+            </div>
+            <div class="slide-item">
+                <a href="JavaScript:;" class="slide-link">
+                    <img src="img/3.jpg" alt="slide" class="slide-img">
+                </a>
+            </div>
+            <div class="slide-item">
+                <a href="JavaScript:;" class="slide-link">
+                    <img src="img/4.jpg" alt="slide" class="slide-img">
+                </a>
+            </div>
+            <div class="slide-item">
+                <a href="JavaScript:;" class="slide-link">
+                    <img src="img/5.jpg" alt="slide" class="slide-img">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="btn-container">
+        <button class="prev" id="prev">PREV</button>
+        <button class="next" id="next">NEXT</button>
+    </div>
+    <script src="js/hammer.min.js"></script>
+    <script src="js/slide.js"></script>
+    <script>
+        //实例化Slide构造函数
+        var slide = new Slide(document.getElementById("slide"), {
+            initIndex: 0,
+            transTime: 0.3,
+            hasindictor: true
+        });
+        //添加点击事件
+        document.getElementById("prev").addEventListener("click", function() {
+            slide.prev();
+        }, false);
+        document.getElementById("next").addEventListener("click", function() {
+            slide.next();
+        }, false);
+    </script>
+    <script>
+        //绑定触摸事件
+        var hammer = new Hammer(slide.getElem());
+        var isSwiping = false;
+        //拖动移动
+        hammer.on("panmove", function(e) {
+            var distance = e.deltaX + slide.getDistanceByIndex(slide.getIndex());
+            slide.move(distance);
+        });
+        //拖动结束
+        hammer.on("panend", function(e) {
+            if (isSwiping) return;
+            var distance = e.deltaX + slide.getDistanceByIndex(slide.getIndex());
+            var index = Math.round(-distance / slide.getDistance());
+            slide.to(index);
+        });
+        //向右快速滑动
+        hammer.on("swiperight", function() {
+            isSwiping = true;
+            slide.prev(function() {
+                isSwiping = false;
+            });
+        });
+        //向左快速滑动
+        hammer.on("swipeleft", function() {
+            isSwiping = true;
+            slide.next(function() {
+                isSwiping = false;
+            });
+        })
+    </script>
+</body>
+
+</html>

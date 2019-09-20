@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>资源按需加载</title>
+    <style>
+        .main {
+            margin: 0 auto;
+            width: 500px;
+            background-color: #f1f1f1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
+        .img-container {
+            width: 240px;
+            height: 300px;
+            background-color: #fff;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .img-item {
+            width: 100%;
+            min-height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/1.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/2.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/3.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/4.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/5.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/6.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/7.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/8.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/9.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/10.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/1.jpg">
+        </div>
+        <div class="img-container">
+            <img class="img-item img-lazyloading" src="./img/loading.gif" data-img="./img/2.jpg">
+        </div>
+    </div>
+    <script>
+        (function imgLazyloading() {
+            //定义一个变量设置类名
+            let lazyLoadingClass = ".img-lazyloading";
+            //获取到所有的img元素，并且通过Array.prototype.slice.call()方法将类数组转为数组，方便调用数组方法;
+            let imgSrcArr = Array.prototype.slice.call(document.querySelectorAll(lazyLoadingClass));
+            //进入页面时执行一次加载
+            lazyLoadImgs();
+            //监听滚动事件
+            let timer = null;
+            window.addEventListener("scroll", function () {
+                //每次滚动的时候清除定时器，再创建定时器，避免执行次数太多；
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    lazyLoadImgs();
+                }, 100)
+            }, false)
+            //封装lazyLoadImgs
+            function lazyLoadImgs() {
+                for (let i = 0; i < imgSrcArr.length; i++) {
+                    if (isInVisibleArea(imgSrcArr[i])) {
+                        imgSrcArr[i].src = imgSrcArr[i].getAttribute('data-img');
+                        imgSrcArr.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+            //封装isInVisibleArea,判断图片是不是在可视区
+            function isInVisibleArea(el) {
+                let rect = el.getBoundingClientRect();
+                return rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.right < innerWidth;
+            };
+        })()
+    </script>
+</body>
+
+</html>
