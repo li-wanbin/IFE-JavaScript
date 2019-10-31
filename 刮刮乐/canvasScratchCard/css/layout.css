@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+@keyframes btwc {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+html,body { padding: 0; margin: 0; background-color: #E2E2E2; }
+.ggl-wrapper { padding: 20px; }
+.scratch-ct { padding: 10px; background-color: #FFF; }
+.scratch-ct .inner-ct { position: relative; }
+.scratch-ct .content-ct { min-height: 100px; }
+.scratch-ct .scratch-canvas { position: absolute; z-index: 2; left: 0; top: 0; }
+.scratch-ct .cav-cover { position: absolute; z-index: 999; left: 0; right: 0; top: 0; min-height: 100px; background: url(../img/bg_1.jpg) repeat left top; background-size: cover; }
+.scratch-ct .start-gg-bt { position: absolute; width: 150px; height:40px; line-height: 40px; left: 50%; top: 50%; margin-left: -75px; margin-top: -30px; color: #FFF; font-size: 20px; text-align: center; background-color: red; border-radius: 20px;}
+.scratch-ct .notice-gg-times { position: absolute; left: 0; right: 0; top: 50%; margin-top: 20px; color: #8f6f06; font-size: 14px; text-align: center; }
+.ggl-bg-top-bolang { height: 20px;  }
+.ggl-bg-bottom-bolang { height: 20px; }
+.gift-show-ct { display: none; position: absolute; z-index: 9999; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0); transition: all .3s ease-in; }
+.gift-show-ct.with-shadow { background-color: rgba(0,0,0,1); }
+.gift-show-ct .show-inner { position: relative; margin: 15% auto 0 auto; padding-top: 70px; width: 350px; max-width: 85%; box-sizing: border-box; }
+.gift-show-ct .panel-head { position: absolute; top: 30px; left: 0; right: 0; height: 60px; }
+.gift-show-ct .panel-body { padding: 30px 15px 15px 15px; /*height: 200px;*/ background-color: #FFF; border: solid 4px #ffe6df; border-radius: 5px; }
+.gift-show-ct .show-inner.small { transform: scale(.1); transition: all .3s ease-in; -webkit-transition: all .3s ease-in; }
+.gift-show-ct .show-inner.normal { transform: scale(1); }
+.gift-show-ct .close-bt { position: absolute; right: 20px; top: 20px; font-size: 34px; color: #FFF; }
+.gift-cover { width: 100%; }
+.operator-ct {
+    height: 40px; padding-top: 15px;
+}
+.gift-show-ct .show-inner.normal .go-to-bt {
+    -webkit-animation: btwc infinite 1s ease-in-out;
+    -o-animation: btwc infinite 1s ease-in-out;
+    animation: btwc infinite 1s ease-in-out;
+    display: block; height: 40px; line-height: 35px; margin: auto; font-size: 18px; text-decoration: none; color: #000; text-align: center; 
+}

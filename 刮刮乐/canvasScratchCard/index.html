@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=0, user-scalable=0, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>H5 Canvas 刮刮乐</title>
+    <link rel="stylesheet" type="text/css" href="./css/layout.css">
+</head>
+<body>
+<div class="main">
+    <div class="ggl-wrapper">
+        <div class="ggl-bg-top-bolang"></div>
+        <div id="scratch-ct" class="scratch-ct">
+            <div id="scratch-inner" class="inner-ct">
+                <div id="content-ct" class="content-ct" style="visibility: hidden;">
+                    <img id="gift-cover" class="gift-cover" src="img/gift-cover.jpg" alt="">
+                </div>
+                <canvas id="scratch-canvas" class="scratch-canvas"></canvas>
+                <div id="cav-cover" class="cav-cover"><div id="start-gg-bt" class="start-gg-bt">开始刮奖</div><div class="notice-gg-times">今日还有 <span style="color:red">8</span> 次刮奖机会</div></div>
+            </div>
+        </div>
+        <div class="ggl-bg-bottom-bolang"></div>
+    </div>
+    <div id="gift-show-ct" class="gift-show-ct">
+        <span id="close-bt" class="close-bt">×</span>
+        <div class="show-inner small">
+            <div class="panel-head"></div>
+            <div class="panel-body">
+                <img class="gift-cover" src="img/gift-cover.jpg" alt="">
+                <div class="operator-ct"><a id="go-to-bt" class="go-to-bt" href="http://blog.csdn.net/zhouzme/" target="_blank">立即领取</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./js/scratch.js"></script>
+<script src="./js/main.js"></script>
+</body>
+</html>

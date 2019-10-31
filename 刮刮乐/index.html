@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas画布的圆形橡皮檫效果</title>
+    <style>
+        body {
+            margin: 0 auto;
+            width: 400px;
+            position: relative;
+        }
+
+        .box {
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            width: 400px;
+            text-align: center;
+            height: 20px;
+            font-size: 20px;
+            line-height: 20px;
+            z-index: -1;
+        }
+
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" style="margin: 0 auto;" width="400" height="200"></canvas>
+    <div class="box">谢谢参与</div>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext("2d");
+    var isClearCover = false;//判断遮盖层是否清除完毕
+    var isPc = IsPC();//判断设备是移动端还是PC端
+    //绘制遮盖层
+    ctx.rect(0, 0, 400, 200);
+    ctx.fillStyle = '#ddd';
+    ctx.fill();
+    // if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+    //     mobileTouchEvent()
+    // } else if (/(Android)/i.test(navigator.userAgent)) {
+    //     mobileTouchEvent()
+    // } else {
+    //     pcMouseEvent()
+    // };
+    if (isPc) {
+        pcMouseEvent();
+    } else {
+        mobileTouchEvent();
+    }
+
+    //PC端事件绑定
+    function pcMouseEvent() {
+        //绑定touch事件，获取当前点击区域进行擦除
+        canvas.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            //获取到canvas距离窗口左上角的位置
+            var offsetLeft = canvas.getBoundingClientRect().left;
+            var offsetTop = canvas.getBoundingClientRect().top;
+
+            //获取到鼠标距离窗口左上角的
+            var downX = e.clientX - offsetLeft;
+            var downY = e.clientY - offsetTop;
+
+            generatePixel(downX, downY);
+            canvas.addEventListener("mousemove", mouseMove);
+            canvas.addEventListener("mouseup", mouseUp);
+
+            function mouseMove(e) {
+                var moveX = e.clientX - offsetLeft;
+                var moveY = e.clientY - offsetTop;
+                generatePixel(moveX, moveY);
+            }
+            function mouseUp() {
+                var percentage = getFilledPercentage();
+                handleFilledPercentage(percentage);
+                canvas.removeEventListener("mousemove", mouseMove);
+                canvas.removeEventListener("mouseup", mouseUp);
+                if (isClearCover) {
+                    showPrize();
+                }
+            }
+        });
+    }
+    //移动端事件绑定
+    function mobileTouchEvent() {
+        //绑定touch事件，获取当前点击区域进行擦除
+        canvas.addEventListener("touchstart", function (e) {
+            e.preventDefault();
+            //获取到canvas距离窗口左上角的位置
+            var offsetLeft = canvas.getBoundingClientRect().left;
+            var offsetTop = canvas.getBoundingClientRect().top;
+
+            //获取到鼠标距离窗口左上角的
+            var downX = e.changedTouches[0].clientX - offsetLeft;
+            var downY = e.changedTouches[0].clientY - offsetTop;
+
+            generatePixel(downX, downY);
+            canvas.addEventListener("touchmove", mouseMove);
+            canvas.addEventListener("touchend", mouseUp);
+
+            function mouseMove(e) {
+                var moveX = e.changedTouches[0].clientX - offsetLeft;
+                var moveY = e.changedTouches[0].clientY - offsetTop;
+                generatePixel(moveX, moveY);
+            }
+            function mouseUp() {
+                var percentage = getFilledPercentage();
+                handleFilledPercentage(percentage);
+                canvas.removeEventListener("touchmove", mouseMove);
+                canvas.removeEventListener("touchend", mouseUp);
+                if (isClearCover) {
+                    showPrize();
+                }
+            }
+        });
+    }
+
+    //根据坐标位置，生成一个清除的圆形
+    function generatePixel(x, y) {
+        var num = 50;
+        var r = num / 2;
+        clearArc(x, y, num / 2);
+        //如果是在左右边缘，需要绘制两次
+        if (x + r > canvas.width) {
+            clearArc(x - canvas.width, y, num / 2);
+        }
+        if (x - r < 0) {
+            clearArc(x + canvas.width, y, num / 2);
+        }
+    };
+
+    //封装一个以圆形清除遮盖层的方法
+    function clearArc(x, y, radius) {//圆心(x,y)，半径radius
+        for (var i = 0; i <= radius; i++) {
+            var calcWidth = radius - i;
+            var calcHeight = Math.sqrt(radius * radius - calcWidth * calcWidth);
+
+            var posX = x - calcWidth;
+            var posY = y - calcHeight;
+
+            var widthX = 2 * calcWidth;
+            var heightY = 2 * calcHeight;
+            ctx.clearRect(posX, posY, widthX, heightY);
+        }
+    }
+    //根据百分比清除全部遮盖层
+    function handleFilledPercentage(percentage) {
+        percentage = percentage || 0;
+        if (parseInt(percentage) > 50) {
+            // 当像素点的个数超过  50% 时，清空画布，显示底图
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            isClearCover = true;
+        }
+    }
+    // 计算已经刮过的区域占整个区域的百分比
+    function getFilledPercentage() {
+        let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        // imgData.data是个数组，存储着指定区域每个像素点的信息，数组中4个元素表示一个像素点的rgba值
+        let pixels = imgData.data;
+        let transPixels = [];
+        for (let i = 0; i < pixels.length; i += 4) {
+            // 严格上来说，判断像素点是否透明需要判断该像素点的a值是否等于0，
+            // 为了提高计算效率，这儿设置当a值小于128，也就是半透明状态时就可以了
+            if (pixels[i + 3] < 128) {
+                transPixels.push(pixels[i + 3]);
+            }
+        }
+        return (transPixels.length / (pixels.length / 4) * 100).toFixed(2) + '%'
+    }
+    //遮盖层全部清除，显示奖品
+    function showPrize() {
+        console.log('遮盖层已经清除完毕！')
+    }
+
+    //判断设备是PC还是移动端
+    function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }
+        }
+        return flag;
+    }
+</script>
+
+</html>
