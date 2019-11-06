@@ -1,3 +1,3 @@
 # IFE-JavaScript
 
-JavaScript练习
+JavaScript小项目
