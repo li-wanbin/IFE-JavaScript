@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取网络信号类型</title>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+        const box = document.getElementById('box')
+        console.log(navigator)
+        if (navigator.connection) {
+            try {
+                const connection = navigator.connection
+                const network = connection.effectiveType || '其他'
+                box.innerHTML = `当前是${network}网络`
+            } catch(e) {
+                console.log(e)
+            }
+        } else {
+            try {
+                const networkStr = navigator.userAgent.match(/NetType\/\w+/) ? navigator.userAgent.match(/NetType\/\w+/)[0] : 'NetType/other'
+                const network = networkStr.toLowerCase().replace('nettype/', '')
+                box.innerHTML = `当前是${network}网络`
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    </script>
+</body>
+</html>
