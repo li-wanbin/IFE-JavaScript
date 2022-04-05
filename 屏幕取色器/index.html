@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <input type="text" class="color" />
+    <button class="getColor">点击取色</button>
+    <script>
+      const getColor = async () => {
+        const eyeDropper = new EyeDropper()
+        const { sRGBHex } = await eyeDropper.open()
+        document.querySelector('.color').value = sRGBHex
+      }
+
+      document.querySelector('.getColor').addEventListener('click', getColor)
+    </script>
+  </body>
+</html>
